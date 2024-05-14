@@ -1,0 +1,143 @@
+
+
+
+.schedule {
+  border: 1px solid #ccc;
+  border-radius: 1px;
+  padding: 20px;
+  width: 600px;
+  background-color: #fff;
+  margin: 0 auto;
+  height: 50%;
+  box-shadow: 10px 10px 10px grey;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+  background-color: #007bff; 
+  color: white; 
+  padding: 10px; 
+  border-radius: 1px; 
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.navigation button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 100%; 
+  cursor: pointer;
+}
+
+.navigation button.disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.calendar {
+  display: flex;
+  justify-content: space-between;
+}
+
+.day {
+  border: 1px solid #ccc;
+  border-radius: 1px; 
+  padding: 10px;
+  text-align: center;
+  width: 120px;
+}
+
+.weekday {
+  font-size: smaller;
+  color: grey;
+}
+
+.monthday {
+  font-weight: bold;
+}
+
+.date {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  white-space: pre-line; 
+}
+
+.date span {
+  display: block;
+}
+
+.times {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.time-slot {
+  background-color: #2b42613a;
+  color: #1c385cd3;
+  font-size: 103%;
+  font-weight: bolder;
+  border: none;
+  padding: 15px;
+  margin: 2px 0;
+  border-radius: 1px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.time-slot:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+.time-slot.selected {
+  background-color: #007bff;
+  color: white;
+}
+
+.time-slot[disabled] {
+  background-color: white;
+}
+
+.no-times {
+  padding: 5px;
+  margin: 2px 0;
+}
+
+.more-button {
+  background-color: #2b42613a;
+  color: #1c385cd3;
+  font-weight: bolder;
+  font-size: 103%;
+  border: none;
+  padding: 15px;
+  margin: 2px 0;
+  border-radius: 1px; 
+  cursor: pointer;
+  width: 100%;
+}
+
+.schedule-button {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.schedule-button button {
+  background-color: #28a745;
+  font-weight: bolder;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 1px; 
+  cursor: pointer;
+  font-size: 16px;
+  margin: 0 auto;
+}

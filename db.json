@@ -1,0 +1,60 @@
+{
+  "professionals": [
+    {
+      "id": 1,
+      "name": "Professional Name 1",
+      "role": "PSYCHOLOGIST",
+      "location": "Lisbon",
+      "timezone": "Lisbon (+1)",
+      "price": 160,
+      "appointment_length": 50,
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam egestas purus et sodales vulputate. Praesent rhoncus ex in hendrerit varius Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam egestas purus et sodales vulputate. Praesent rhoncus ex in hendrerit varius Praesent rhoncus ex in hendrerit varius Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam egestas purus et sodales vulputate. Praesent rhoncus ex in hendrerit varius...",
+      "total_reviews": 20,
+      "review_score": 4.9
+    },
+    {
+      "id": 2,
+      "name": "Professional Name 2",
+      "role": "PSYCHIATRIST",
+      "location": "Porto",
+      "timezone": "Porto (+1)",
+      "price": 200,
+      "appointment_length": 45,
+      "description": "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Etiam ultricies lacus vel vehicula venenatis...",
+      "total_reviews": 30,
+      "review_score": 4.7
+    }
+  ],
+  "available_schedules": [
+    {
+      "professional_id": 1,
+      "date": "2024-08-19",
+      "times": ["08:00", "08:30", "09:15", "09:30", "10:00", "10:30", "11:00"]
+    },
+    {
+      "professional_id": 1,
+      "date": "2024-08-20",
+      "times": ["08:00", "08:30", "09:15", "09:30", "10:00", "10:30", "11:00"]
+    },
+    {
+      "professional_id": 1,
+      "date": "2024-08-21",
+      "times": ["08:00", "08:30", "09:15", "09:30", "10:00", "10:30", "11:00"]
+    },
+    {
+      "professional_id": 1,
+      "date": "2024-08-22",
+      "times": ["08:00", "08:30", "09:15", "09:30", "10:00", "10:30", "11:00"]
+    },
+    {
+      "professional_id": 2,
+      "date": "2024-08-21",
+      "times": ["08:00", "08:30", "09:00", "09:30", "10:00"]
+    },
+    {
+      "professional_id": 2,
+      "date": "2024-08-22",
+      "times": ["08:00", "08:30", "09:00", "09:30", "10:00"]
+    }
+  ]
+}
