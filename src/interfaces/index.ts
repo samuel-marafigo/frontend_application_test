@@ -1,4 +1,4 @@
-export interface Professional {
+export interface ProfessionalEntity {
   id: number;
   name: string;
   role: string;
@@ -11,7 +11,7 @@ export interface Professional {
   review_score: number;
 }
 
-export interface ScheduleDay {
+export interface ScheduleEntity {
   professional_id: number;
   date: string; // Format: YYYY-MM-DD
   times: string[];

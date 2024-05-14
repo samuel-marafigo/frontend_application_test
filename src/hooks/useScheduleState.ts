@@ -1,19 +1,19 @@
 import { useState } from 'react';
-import { ScheduleDay } from '../interfaces';
-import { getTimesForDate, handleMoreClick, handleLessClick, handleTimeClick } from '../utils/scheduleUtils';
+import { ScheduleEntity } from '../interfaces';
+import { getAvailableTimesForDate, expandDate, collapseDate, selectTimeForDate } from '../utils/scheduleUtils';
 
-const useScheduleState = (schedule: ScheduleDay[]) => {
+const useScheduleState = (schedule: ScheduleEntity[]) => {
   const [expandedDates, setExpandedDates] = useState<string[]>([]);
   const [selectedTime, setSelectedTime] = useState<{ date: string; time: string | null }>({ date: '', time: null });
 
-  const onMoreClick = (date: string) => handleMoreClick(expandedDates, setExpandedDates, date);
-  const onLessClick = (date: string) => handleLessClick(expandedDates, setExpandedDates, date);
-  const onTimeClick = (date: string, time: string) => handleTimeClick(setSelectedTime, date, time);
+  const onMoreClick = (date: string) => expandDate(expandedDates, setExpandedDates, date);
+  const onLessClick = (date: string) => collapseDate(expandedDates, setExpandedDates, date);
+  const onTimeClick = (date: string, time: string) => selectTimeForDate(setSelectedTime, date, time);
 
   return {
     expandedDates,
     selectedTime,
-    getTimesForDate: (date: string) => getTimesForDate(schedule, date),
+    getTimesForDate: (date: string) => getAvailableTimesForDate(schedule, date),
     onMoreClick,
     onLessClick,
     onTimeClick,
