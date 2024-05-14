@@ -2,19 +2,18 @@ import React from 'react';
 import '../styles/Schedule.css';
 import useSchedule from '../hooks/useSchedule';
 import useScheduleState from '../hooks/useScheduleState';
-import { ScheduleDay } from '../interfaces';
+import { ScheduleEntity } from '../interfaces';
 import { formatDisplayDate } from '../utils/dateUtils';
 
-const today = new Date(Date.UTC(2024, 7, 18, 0, 0, 0));  // Hard-coded date for development purposes - Months are 0-indexed, so 7 = August
+const developmentDate = new Date(Date.UTC(2024, 7, 18, 0, 0, 0));  // Hard-coded date for development purposes - Months are 0-indexed, so 7 = August
 
-
-interface ScheduleProps {
+interface ScheduleComponentProps {
   timezone: string;
-  schedule: ScheduleDay[];
+  schedule: ScheduleEntity[];
 }
 
-const Schedule: React.FC<ScheduleProps> = ({ timezone, schedule }) => {
-  const { currentDate, displayedDates, handlePrevClick, handleNextClick } = useSchedule(today);
+const Schedule: React.FC<ScheduleComponentProps> = ({ timezone, schedule }) => {
+  const { currentDate, displayedDates, navigateToPreviousDate, navigateToNextDate } = useSchedule(developmentDate);
   const { expandedDates, selectedTime, getTimesForDate, onMoreClick, onLessClick, onTimeClick } = useScheduleState(schedule);
 
   return (
@@ -24,10 +23,10 @@ const Schedule: React.FC<ScheduleProps> = ({ timezone, schedule }) => {
         <p>Timezone: {timezone}</p>
       </div>
       <div className="navigation">
-        <button onClick={handlePrevClick} disabled={currentDate <= today} data-testid="prev-button" className={currentDate <= today ? 'disabled' : ''}>
+        <button onClick={navigateToPreviousDate} disabled={currentDate <= developmentDate} data-testid="prev-button" className={currentDate <= developmentDate ? 'disabled' : ''}>
           &lt;
         </button>
-        <button onClick={handleNextClick} data-testid="next-button">
+        <button onClick={navigateToNextDate} data-testid="next-button">
           &gt;
         </button>
       </div>

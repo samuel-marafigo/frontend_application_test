@@ -1,44 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import ProfessionalCard from './ProfessionalCard';
 import Schedule from './Schedule';
-import { Professional, ScheduleDay } from '../interfaces';
+import { ProfessionalEntity, ScheduleEntity } from '../interfaces';
 import useFetch from '../hooks/useFetch';
 import '../styles/App.css';
 
 const App: React.FC = () => {
-  const [professional, setProfessional] = useState<Professional | null>(null);
-  const [schedule, setSchedule] = useState<ScheduleDay[]>([]);
+  const [selectedProfessional, setSelectedProfessional] = useState<ProfessionalEntity | null>(null);
+  const [availableSchedule, setAvailableSchedule] = useState<ScheduleEntity[]>([]);
 
   // Fetch the professional with ID 1
-  const [professionalData, loadingProfessional, errorProfessional] = useFetch<Professional>('http://localhost:3000/professionals/1');
+  const [fetchedProfessional, isProfessionalLoading, professionalError] = useFetch<ProfessionalEntity>('http://localhost:3000/professionals/1');
 
-  // Fetch all schedules
-  const [scheduleData, loadingSchedule, errorSchedule] = useFetch<ScheduleDay[]>('http://localhost:3000/available_schedules');
-
-  useEffect(() => {
-    if (professionalData) {
-      setProfessional(professionalData);
-    }
-  }, [professionalData]);
+  // Fetch all available schedules
+  const [fetchedSchedulesList, isScheduleLoading, scheduleError] = useFetch<ScheduleEntity[]>('http://localhost:3000/available_schedules');
 
   useEffect(() => {
-    if (scheduleData) {
-      const filteredSchedules = scheduleData.filter(schedule => schedule.professional_id === 1);
-      setSchedule(filteredSchedules);
+    if (fetchedProfessional) {
+      setSelectedProfessional(fetchedProfessional);
     }
-  }, [scheduleData]);
+  }, [fetchedProfessional]);
 
-  if (loadingProfessional || loadingSchedule) return <div>Loading...</div>;
-  if (errorProfessional || errorSchedule) return <div>Error: {errorProfessional || errorSchedule}</div>;
+  useEffect(() => {
+    if (fetchedSchedulesList) {
+      const filteredSchedulesListByProfessionalId = fetchedSchedulesList.filter(schedule => schedule.professional_id === 1);
+      setAvailableSchedule(filteredSchedulesListByProfessionalId);
+    }
+  }, [fetchedSchedulesList]);
 
-  if (!professional) return <div>Loading...</div>;
+  if (isProfessionalLoading || isScheduleLoading) return <div>Loading...</div>;
+  if (professionalError || scheduleError) return <div>Error: {professionalError || scheduleError}</div>;
 
-  console.log('Schedule:', schedule);
+  if (!selectedProfessional) return <div>Error loading the selected professional.</div>;
 
   return (
     <div className="app">
-      <ProfessionalCard {...professional} />
-      <Schedule timezone={professional.timezone} schedule={schedule} />
+      <ProfessionalCard {...selectedProfessional} />
+      <Schedule timezone={selectedProfessional.timezone} schedule={availableSchedule} />
     </div>
   );
 };

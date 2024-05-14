@@ -4,7 +4,7 @@ import {  generateDates } from '../utils/dateUtils';
 const useSchedule = (initialDate: Date) => {
   const [currentDate, setCurrentDate] = useState(initialDate);
 
-  const handlePrevClick = () => {
+  const navigateToPreviousDate = () => {
     const newDate = new Date(currentDate);
     newDate.setUTCDate(currentDate.getUTCDate() - 1);
     if (newDate >= initialDate) {
@@ -12,7 +12,7 @@ const useSchedule = (initialDate: Date) => {
     }
   };
 
-  const handleNextClick = () => {
+  const navigateToNextDate = () => {
     const newDate = new Date(currentDate);
     newDate.setUTCDate(currentDate.getUTCDate() + 1);
     setCurrentDate(newDate);
@@ -20,7 +20,7 @@ const useSchedule = (initialDate: Date) => {
 
   const displayedDates = generateDates(currentDate);
 
-  return { currentDate, displayedDates, handlePrevClick, handleNextClick };
+  return { currentDate, displayedDates, navigateToPreviousDate, navigateToNextDate };
 };
 
 export default useSchedule;

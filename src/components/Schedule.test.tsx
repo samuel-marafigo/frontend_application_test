@@ -2,7 +2,7 @@ import { render, fireEvent} from '@testing-library/react';
 import Schedule from '../components/Schedule'; // Adjust the path as necessary
 import useSchedule from '../hooks/useSchedule';
 import useScheduleState from '../hooks/useScheduleState';
-import { ScheduleDay } from '../interfaces';
+import { ScheduleEntity } from '../interfaces';
 
 // Mock the hooks
 jest.mock('../hooks/useSchedule');
@@ -11,7 +11,7 @@ jest.mock('../hooks/useScheduleState');
 const mockUseSchedule = useSchedule as jest.Mock;
 const mockUseScheduleState = useScheduleState as jest.Mock;
 
-const schedule: ScheduleDay[] = [
+const schedule: ScheduleEntity[] = [
   {
     professional_id: 1,
     date: '2024-08-18',

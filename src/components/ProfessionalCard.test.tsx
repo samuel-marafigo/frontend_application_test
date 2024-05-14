@@ -1,8 +1,8 @@
 import { render } from '@testing-library/react';
 import ProfessionalCard from '../components/ProfessionalCard'; // Adjust the path as necessary
-import { Professional } from '../interfaces';
+import { ProfessionalEntity } from '../interfaces';
 
-const professional: Professional = {
+const professional: ProfessionalEntity = {
   id: 1,
   name: 'Dr. John Doe',
   role: 'Psychologist',

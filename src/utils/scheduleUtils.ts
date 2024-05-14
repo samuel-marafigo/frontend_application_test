@@ -1,33 +1,33 @@
-import { ScheduleDay } from '../interfaces';
+import { ScheduleEntity } from '../interfaces';
 import { formatDate } from './dateUtils';
 
-export const getTimesForDate = (schedule: ScheduleDay[], date: string): string[] => {
-  const daySchedule = schedule.find(day => formatDate(new Date(day.date)) === date);
-  return daySchedule ? daySchedule.times : [];
+export const getAvailableTimesForDate = (schedule: ScheduleEntity[], formattedDate: string): string[] => {
+  const scheduleForDay = schedule.find(day => formatDate(new Date(day.date)) === formattedDate);
+  return scheduleForDay ? scheduleForDay.times : [];
 };
 
-export const handleMoreClick = (
-expandedDates: string[],
-  setExpandedDates: React.Dispatch<React.SetStateAction<string[]>>,
-  date: string
+export const expandDate = (
+  currentExpandedDates: string[],
+  updateExpandedDates: React.Dispatch<React.SetStateAction<string[]>>,
+  dateToExpand: string
 ) => {
-  setExpandedDates(prev => [...prev, date]);
-  console.log(expandedDates);
+  updateExpandedDates(previousDates => [...previousDates, dateToExpand]);
+  console.log(currentExpandedDates);
 };
 
-export const handleLessClick = (
-  expandedDates: string[],
-  setExpandedDates: React.Dispatch<React.SetStateAction<string[]>>,
-  date: string
+export const collapseDate = (
+  currentExpandedDates: string[],
+  updateExpandedDates: React.Dispatch<React.SetStateAction<string[]>>,
+  dateToCollapse: string
 ) => {
-  setExpandedDates(prev => prev.filter(d => d !== date));
-  console.log(expandedDates);
+  updateExpandedDates(previousDates => previousDates.filter(date => date !== dateToCollapse));
+  console.log(currentExpandedDates);
 };
 
-export const handleTimeClick = (
-  setSelectedTime: React.Dispatch<React.SetStateAction<{ date: string; time: string | null }>>,
-  date: string,
-  time: string
+export const selectTimeForDate = (
+  updateSelectedTime: React.Dispatch<React.SetStateAction<{ date: string; time: string | null }>>,
+  selectedDate: string,
+  selectedTime: string
 ) => {
-  setSelectedTime({ date, time });
+  updateSelectedTime({ date: selectedDate, time: selectedTime });
 };
