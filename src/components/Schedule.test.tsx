@@ -1,4 +1,4 @@
-import { render, fireEvent} from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import Schedule from '../components/Schedule'; // Adjust the path as necessary
 import useSchedule from '../hooks/useSchedule';
 import useScheduleState from '../hooks/useScheduleState';
@@ -25,12 +25,18 @@ const schedule: ScheduleEntity[] = [
 ];
 
 describe('Schedule Component', () => {
+  let navigateToPreviousDate: jest.Mock;
+  let navigateToNextDate: jest.Mock;
+
   beforeEach(() => {
+    navigateToPreviousDate = jest.fn();
+    navigateToNextDate = jest.fn();
+    
     mockUseSchedule.mockReturnValue({
       currentDate: new Date(Date.UTC(2024, 7, 17)),
       displayedDates: ['2024-08-18', '2024-08-19', '2024-08-20', '2024-08-21'],
-      handlePrevClick: jest.fn(),
-      handleNextClick: jest.fn(),
+      navigateToPreviousDate,
+      navigateToNextDate,
     });
 
     mockUseScheduleState.mockReturnValue({
@@ -47,60 +53,76 @@ describe('Schedule Component', () => {
   });
 
   test('when rendered, it should display the schedule header', () => {
-    const { getByText } = render(<Schedule timezone="America/New_York" schedule={schedule} />);
+    const { getByText } = render(<Schedule timezone="Lisbon" schedule={schedule} />);
     expect(getByText('Schedule your session!')).toBeInTheDocument();
   });
 
   test('when rendered, it should display the timezone', () => {
-    const { getByText } = render(<Schedule timezone="America/New_York" schedule={schedule} />);
-    expect(getByText('Timezone: America/New_York')).toBeInTheDocument();
+    const { getByText } = render(<Schedule timezone="Lisbon" schedule={schedule} />);
+    expect(getByText('Timezone: Lisbon')).toBeInTheDocument();
   });
 
   test('when rendered, it should display the navigation buttons', () => {
-    const { getByTestId } = render(<Schedule timezone="America/New_York" schedule={schedule} />);
+    const { getByTestId } = render(<Schedule timezone="Lisbon" schedule={schedule} />);
     expect(getByTestId('prev-button')).toBeInTheDocument();
     expect(getByTestId('next-button')).toBeInTheDocument();
   });
 
-  test('when clicking the next button, it should call handleNextClick', () => {
-    const { getByTestId } = render(<Schedule timezone="America/New_York" schedule={schedule} />);
+  test('when clicking the next button, it should call navigateToNextDate', () => {
+    const { getByTestId } = render(<Schedule timezone="Lisbon" schedule={schedule} />);
     const nextButton = getByTestId('next-button');
     fireEvent.click(nextButton);
-    expect(mockUseSchedule().handleNextClick).toHaveBeenCalled();
+    expect(mockUseSchedule().navigateToNextDate).toHaveBeenCalled();
   });
 
- /* test('when clicking the previous button, it should call handlePrevClick', () => {
-    const { getByTestId } = render(<Schedule timezone="America/New_York" schedule={schedule} />);
-    const prevButton = getByTestId('prev-button');
-    fireEvent.click(prevButton);
-    expect(mockUseSchedule().handlePrevClick).toHaveBeenCalled();
-  }); 
-  For some reason this test isn't working, but I'm not sure why.*/
+  test('when clicking the previous button, it should call navigateToPreviousDate', () => {
+    mockUseSchedule.mockReturnValueOnce({
+      currentDate: new Date(Date.UTC(2024, 7, 19)), // Set current date so the button isn't disabled.
+      displayedDates: ['2024-08-17', '2024-08-18', '2024-08-19', '2024-08-20'],
+      navigateToPreviousDate,
+      navigateToNextDate,
+    });
   
+    const { getByTestId } = render(<Schedule timezone="Lisbon" schedule={schedule} />);
+    const prevButton = getByTestId('prev-button');
+    
+    expect(prevButton).not.toBeDisabled();
+
+    fireEvent.click(prevButton);
+    expect(navigateToPreviousDate).toHaveBeenCalled();
+  });
 
   test('when rendered, it should display the correct dates', () => {
-    const { getByText } = render(<Schedule timezone="America/New_York" schedule={schedule} />);
+    const { getByText, getByTestId } = render(<Schedule timezone="Lisbon" schedule={schedule} />);
+    const calendar = getByTestId('calendar');
+    expect(calendar).toBeInTheDocument();
     expect(getByText('AUG 18')).toBeInTheDocument();
     expect(getByText('AUG 19')).toBeInTheDocument();
   });
 
   test('when clicking a time slot, it should call onTimeClick', () => {
-    const { getByText } = render(<Schedule timezone="America/New_York" schedule={schedule} />);
-    const timeSlot = getByText('09:00');
+    const { getByTestId } = render(<Schedule timezone="Lisbon" schedule={schedule} />);
+    const timeSlot = getByTestId('time-slot-0-0');
     fireEvent.click(timeSlot);
     expect(mockUseScheduleState().onTimeClick).toHaveBeenCalledWith('2024-08-18', '09:00');
   });
 
   test('when there are more than 5 times, it should display the More button', () => {
-    const { getByText } = render(<Schedule timezone="America/New_York" schedule={schedule} />);
-    expect(getByText('More')).toBeInTheDocument();
+    const { getByTestId } = render(<Schedule timezone="Lisbon" schedule={schedule} />);
+    expect(getByTestId('more-button-0')).toBeInTheDocument();
   });
 
   test('when clicking the More button, it should display all times', () => {
-    const { getByText } = render(<Schedule timezone="America/New_York" schedule={schedule} />);
-    const moreButton = getByText('More');
+    const { getByTestId, getByText } = render(<Schedule timezone="Lisbon" schedule={schedule} />);
+    const moreButton = getByTestId('more-button-0');
     fireEvent.click(moreButton);
     expect(mockUseScheduleState().onMoreClick).toHaveBeenCalledWith('2024-08-18');
-  });
+  
 
+    const daySchedule = schedule.find(day => day.date === '2024-08-18');
+    const times = daySchedule ? daySchedule.times : [];
+    times.forEach(time => {
+      expect(getByText(time)).toBeInTheDocument();
+    });
+  });
 });

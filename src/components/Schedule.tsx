@@ -23,23 +23,28 @@ const Schedule: React.FC<ScheduleComponentProps> = ({ timezone, schedule }) => {
         <p>Timezone: {timezone}</p>
       </div>
       <div className="navigation">
-        <button onClick={navigateToPreviousDate} disabled={currentDate <= developmentDate} data-testid="prev-button" className={currentDate <= developmentDate ? 'disabled' : ''}>
+        <button
+          onClick={navigateToPreviousDate}
+          disabled={currentDate <= developmentDate}
+          data-testid="prev-button"
+          className={currentDate <= developmentDate ? 'disabled' : ''}
+        >
           &lt;
         </button>
         <button onClick={navigateToNextDate} data-testid="next-button">
           &gt;
         </button>
       </div>
-      <div className="calendar">
+      <div className="calendar" data-testid="calendar">
         {displayedDates.map((date, index) => {
           const { weekday, monthday } = formatDisplayDate(new Date(date));
           return (
-            <div key={index} className="day">
+            <div key={index} className="day" data-testid={`day-${index}`}>
               <div className="date">
-                <span className="weekday">{weekday}</span>
-                <span className="monthday">{monthday}</span>
+                <span className="weekday" data-testid={`weekday-${index}`}>{weekday}</span>
+                <span className="monthday" data-testid={`monthday-${index}`}>{monthday}</span>
               </div>
-              <div className="times">
+              <div className="times" data-testid={`times-${index}`}>
                 {Array.from({ length: expandedDates.includes(date) ? getTimesForDate(date).length : 5 }).map((_, idx) => {
                   const times = getTimesForDate(date);
                   const time = times[idx] || '-';
@@ -49,16 +54,17 @@ const Schedule: React.FC<ScheduleComponentProps> = ({ timezone, schedule }) => {
                       className={`time-slot ${selectedTime.date === date && selectedTime.time === time ? 'selected' : ''}`}
                       onClick={() => time !== '-' && onTimeClick(date, time)}
                       disabled={time === '-'}
+                      data-testid={`time-slot-${index}-${idx}`}
                     >
                       {time}
                     </button>
                   );
                 })}
                 {getTimesForDate(date).length > 5 && !expandedDates.includes(date) && (
-                  <button className="more-button" onClick={() => onMoreClick(date)}>More</button>
+                  <button className="more-button" onClick={() => onMoreClick(date)} data-testid={`more-button-${index}`}>More</button>
                 )}
                 {expandedDates.includes(date) && (
-                  <button className="more-button" onClick={() => onLessClick(date)}>Less</button>
+                  <button className="more-button" onClick={() => onLessClick(date)} data-testid={`less-button-${index}`}>Less</button>
                 )}
               </div>
             </div>
@@ -66,7 +72,7 @@ const Schedule: React.FC<ScheduleComponentProps> = ({ timezone, schedule }) => {
         })}
       </div>
       {selectedTime.time && (
-        <div className="schedule-button">
+        <div className="schedule-button" data-testid="schedule-button">
           {(() => {
             const { weekday, monthday } = formatDisplayDate(new Date(selectedTime.date));
             return (
